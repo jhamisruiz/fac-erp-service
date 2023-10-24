@@ -1,0 +1,97 @@
+<?php
+{% set nametwig %}{{ class }}{% endset %}
+{% set namespacetwig %}{{ namespace }}{% endset %}
+{% set nsfor %}{{ ns }}{% endset %}
+namespace {{nsfor}}\{{namespacetwig}};
+
+use {{nsfor}}\{{response}}\Response\{{name}}Response;
+use {{nsfor}}\{{persistence}}\Persistence\{{name}}Persistence;
+use App\Utils\Utils;
+
+class {{ nametwig }}{{ suffix }}
+{
+    private $request;
+    private $response;
+    private $service;
+
+    public function __construct($request = null, $response = null, $service = null)
+    {
+        $this->request = $request;
+        $this->response = $response;
+        $this->service = $service;
+    }
+
+    public function Buscar($start, $length, $search, $order)
+    {
+        $data = {{name}}Persistence::Buscar($start, $length, $search, $order);
+
+        $rs = new {{name}}Response($this->service);
+        $data = $rs->ListaResponse($data);
+
+        return  $data;
+    }
+
+    public function Listar($start, $length, $search, $order)
+    {
+        $data = {{name}}Persistence::Listar($start, $length, $search, $order);
+
+        $rs = new {{name}}Response($this->service);
+        $data = $rs->ListaResponse($data);
+
+        return  $data;
+    }
+
+    public function Crear($body)
+    {
+        // validators
+        $res = {{name}}Persistence::Crear($body);
+
+        //$rs = new {{name}}Response($this->service);
+        
+        return $res;
+    }
+
+    public function BuscarPorId($id)
+    {
+        $res = {{name}}Persistence::BuscarPorId($id);
+    
+        $rs = new {{name}}Response($this->service);
+        $data = $rs->ListaResponse($res);
+
+        return  $data[0];
+    }
+
+    public function Actualizar($id, $body)
+    {
+        // validators
+        $data = {{name}}Persistence::Actualizar($id, $body);
+        
+        //$rs = new {{name}}Response($this->service);
+        $res = Utils::responseParamsUpdate($data, $id);
+        return  $res;
+    }
+
+    public function Eliminar($id)
+    {
+        $res = {{name}}Persistence::Eliminar($id);
+
+        return  $res;
+    }
+
+    public function HabilitarDeshabilitar($id, $status)
+    {
+        return {{name}}Persistence::HabilitarDeshabilitar($id, $status);
+    }
+
+    public function Codigo($codigo)
+    {
+        $res = {{name}}Persistence::Codigo($codigo);
+
+        if ($res === 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+}

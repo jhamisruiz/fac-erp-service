@@ -1,0 +1,15 @@
+<?php
+{% set nametwig %}{{ class }}{% endset %}
+{% set namespacetwig %}{{ namespace }}{% endset %}
+{% set nsfor %}{{ ns }}{% endset %}
+namespace {{nsfor}}\{{namespacetwig}};
+
+use {{nsfor}}\{{namespacetwig}}\Http\Routes\{{name}}Routes;
+
+class {{ nametwig }}{{ suffix }}
+{
+    public static function Create($app)
+    {
+        {{name}}Routes::Routes($app);
+    }
+}

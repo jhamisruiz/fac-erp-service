@@ -1,0 +1,25 @@
+{
+  "name": "app-erp-service",
+  "version": "1.0.0",
+  "description": "PHP con integración de Node.js",
+  "main": "g.js",
+  "scripts": {
+    "start": "php -S 0.0.0.0:9080 -t ./",
+    "watch": "webpack --watch --progress",
+    "dev": "pwd && php -S localhost:9080",
+    "g": "node g c",
+    "je": "node g"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "commander": "^10.0.1",
+    "yargs": "^17.7.2"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "php-serve": "^0.0.1",
+    "php-server": "^1.0.0"
+  }
+}

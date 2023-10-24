@@ -1,0 +1,26 @@
+<?php
+{% set nametwig %}{{ class }}{% endset %}
+{% set namespacetwig %}{{ namespace }}{% endset %}
+{% set nsfor %}{{ ns }}{% endset %}
+namespace {{nsfor}}\{{namespacetwig}};
+
+use {{nsfor}}\{{controller}}\{{name}}Controller;
+
+class {{ nametwig }}{{ suffix }}
+{
+    public static function Routes($router)
+    {
+        $ctr = new {{ name }}Controller();
+    
+        // Rutas
+        $router->get('/{{ name|lower }}-buscar', $ctr->Buscar());
+        $router->get('/{{ name|lower }}', $ctr->Listar());
+        $router->post('/{{ name|lower }}', $ctr->Crear());
+        $router->get('/{{ name|lower }}/[i:id]', $ctr->BuscarPorId());
+        $router->put('/{{ name|lower }}/[i:id]', $ctr->Actualizar());
+        $router->delete('/{{ name|lower }}/[i:id]', $ctr->Eliminar());
+        $router->patch('/{{ name|lower }}/[i:id]/habilitar', $ctr->Habilitar());
+        $router->patch('/{{ name|lower }}/[i:id]/deshabilitar', $ctr->Deshabilitar());
+        $router->get('/{{ name|lower }}-codigo', $ctr->Codigo());
+    }
+}

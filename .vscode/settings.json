@@ -1,0 +1,4 @@
+{
+    "php.memoryLimit": "4095M",
+    "php.executablePath": ""
+}

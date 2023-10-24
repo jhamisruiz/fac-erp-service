@@ -1,0 +1,46 @@
+<?php
+
+use AppFactory;
+use RouterMiddleware;
+///
+class ProductoModel
+{
+    public function buscarProductos($start, $length, $search, $order)
+    {
+        // Aquí iría la lógica para buscar productos con los parámetros recibidos
+        $productos = null; //....
+
+        return $productos;
+    }
+}
+
+class NewRoutes
+{
+    function Routes($function)
+    {
+        $app = AppFactory::create();
+        // Agregar middleware para manejar excepciones de ruta no encontrada
+        $app->add(new RouterMiddleware());
+
+        // Middlewares
+        $app->add(MethodOverrideMiddleware::class);
+
+        $model = new ProductoModel();
+        // Rutas
+        $router->get('/productos-listar', function ($request, $response) use ($model) {
+            $start = $request->getQueryParam('start');
+            $length = $request->getQueryParam('length');
+            $search = $request->getQueryParam('search');
+            $order = $request->getQueryParam('order');
+
+            $productos = $model->buscarProductos($start, $length, $search, $order);
+
+            return $response->withJson($productos);
+        });
+
+        //function
+        $function($app);
+
+        $app->run();
+    }
+}

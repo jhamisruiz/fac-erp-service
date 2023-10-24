@@ -1,0 +1,134 @@
+<?php
+{% set nametwig %}{{ class }}{% endset %}
+{% set namespacetwig %}{{ namespace }}{% endset %}
+{% set nsfor %}{{ ns }}{% endset %}
+namespace {{nsfor}}\{{namespacetwig}};
+
+use {{nsfor}}\{{models}}\Models\{{name}}Models;
+use {{nsfor}}\{{persistence}}\Persistence\{{name}}Persistence;
+use App\Utils\Service\NewController;
+
+class {{ nametwig }}{{ suffix }}
+{
+    public function Listar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new {{name}}Models($service);
+            $sv->validateParamsLista();
+
+            // example request
+            $start = $request->param('start');
+            $length = $request->param('length');
+            $search = $request->param('search');
+            $order = $request->param('order');
+
+            $data = {{name}}Persistence::Listar($start, $length, $search, $order);
+
+            $data = $sv->modelResponse($data);
+
+            return  $data;
+        });
+    }
+
+    public function Crear()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new {{name}}Models($service);
+            $sv->validateParamsCrear();
+
+            // example
+            // $user=$app->lazyUser;
+            // $service->validateParam('param_name1', 'Please enter a valid username s')->isLen(4, 6)->isChars('a-zA-Z0-9-');
+            // $service->validateParam('param_name2')->notNull();
+            $body = $request->body();
+
+            $res = {{name}}Persistence::Crear($body);
+            
+            return $res;
+        });
+    }
+
+    public function BuscarPorId()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            // example request, args
+            // $user=$app->lazyUser;
+            // $service->validateParam('param_name1', 'Please enter a valid username s')->isLen(4, 6)->isChars('a-zA-Z0-9-');
+            // $service->validateParam('param_name2')->notNull();
+            $id = $request->param('id');
+
+            $res = {{name}}Persistence::BuscarPorId($id);
+        
+            return $res;
+        });
+    }
+
+    public function Actualizar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            // validators
+            $sv = new {{name}}Models($service);
+            $sv->validateParamsActualziar();
+
+            // example request, args
+            $id = $request->param('id');
+            $body = $request->body();
+
+           $res = {{name}}Persistence::Actualizar($id, $body);;
+
+            return  $res;
+        });
+    }
+
+    public function Eliminar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // example request, args
+            $id = $request->param('id');
+
+            $res = {{name}}Persistence::Eliminar($id);
+
+            return  $res;
+        });
+    }
+
+    public function Habilitar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // example request, args
+            $id = $request->param('id');
+
+            $res =  {{name}}Persistence::HabilitarDeshabilitar($id, true);
+
+            return  $res;
+        });
+    }
+
+    public function Deshabilitar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // example request, args
+            $id = $request->param('id');
+
+            $res =  {{name}}Persistence::HabilitarDeshabilitar($id, 'false');
+
+            return  $res;
+        });
+    }
+}

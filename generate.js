@@ -1,0 +1,1 @@
+const ArtisanCommand = require("./tools/js/artisan"); ArtisanCommand.artisan();
