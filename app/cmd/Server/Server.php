@@ -164,14 +164,35 @@ class Server
             "headers_to_pass" =>  ["Authorization"],
             "url_pattern" => "/producto/[i:id]"
         ],
-        ///
         [
-            "endpoint" => "/v1/cuestionarios", //lista todos los 
+            "endpoint" => "/v1/producto-unspsc-segmentos",
             "method" => "GET",
             "querystring_params" => [],
-            "headers_to_pass" =>  null, //["Authorization"],
-            "url_pattern" => "/cuestionarios"
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/producto-unspsc-segmentos"
         ],
+        [
+            "endpoint" => "/v1/producto-unspsc-familias/[i:codigo]",
+            "method" => "GET",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/producto-unspsc-familias/[i:codigo]"
+        ],
+        [
+            "endpoint" => "/v1/producto-unspsc-clases/[i:codigo]",
+            "method" => "GET",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/producto-unspsc-clases/[i:codigo]"
+        ],
+        [
+            "endpoint" => "/v1/producto-unspsc-productos",
+            "method" => "GET",
+            "querystring_params" => ['codigo', 'descripcion'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/producto-unspsc-productos"
+        ],
+        ///
         //////////////endpoint empleados -
         [
             "endpoint" => "/v1/empleado", //crea

@@ -13,6 +13,8 @@
   "dependencies": {
     "chalk": "^2.4.2",
     "commander": "^10.0.1",
+    "node-php": "0.0.1",
+    "sphp": "^0.6.3",
     "yargs": "^17.7.2"
   },
   "keywords": [],

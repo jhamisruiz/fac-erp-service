@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\mantenedores\Producto\Http\Controller;
 
 use Mnt\mantenedores\Producto\Domain\Models\ProductoModels;
@@ -68,7 +69,7 @@ class ProductoController
 
             $repo = new ProductoRepository();
             $res = $repo->Crear($body);
-            
+
             return $res;
         });
     }
@@ -86,7 +87,7 @@ class ProductoController
 
             $repo = new ProductoRepository();
             $res = $repo->BuscarPorId($id);
-        
+
             return $res;
         });
     }
@@ -168,6 +169,57 @@ class ProductoController
 
             $repo = new ProductoRepository();
             return $repo->Codigo($codigo);
+        });
+    }
+
+    public function Segmentos()
+    {
+        $ctr = new NewController();
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+
+            $repo = new ProductoRepository();
+            $res = $repo->Segmentos();
+
+            return $res;
+        });
+    }
+    public function Familias()
+    {
+        $ctr = new NewController();
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            $codigo = $request->param('codigo');
+
+            $repo = new ProductoRepository();
+            $res = $repo->Familias($codigo);
+
+            return $res;
+        });
+    }
+    public function Clases()
+    {
+        $ctr = new NewController();
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            $codigo = $request->param('codigo');
+
+            $repo = new ProductoRepository();
+            $res = $repo->Clases($codigo);
+
+            return $res;
+        });
+    }
+
+    public function Productos()
+    {
+        $ctr = new NewController();
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            // example request
+            $codigo = $request->param('codigo');
+            $desc = $request->param('descripcion');
+
+            $repo = new ProductoRepository();
+            $res = $repo->Productos($codigo, $desc);
+
+            return $res;
         });
     }
 }
