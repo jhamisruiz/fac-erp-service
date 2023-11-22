@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\mantenedores\Empleado\Http\Controller;
 
 use Mnt\mantenedores\Empleado\Domain\Models\EmpleadoModels;
@@ -36,17 +37,13 @@ class EmpleadoController
         return $ctr->Controller(function ($request, $response, $service) {
             // validators
             $sv = new EmpleadoModels($request, $response, $service);
-            $sv->validateParamsCrear();
-
-            // example
-            // $user=$app->lazyUser;
-            // $service->validateParam('param_name1', 'Please enter a valid username s')->isLen(4, 6)->isChars('a-zA-Z0-9-');
-            // $service->validateParam('param_name2')->notNull();
-            $body = $request->body();
+            $body = $sv->modelRequestBody();
 
             $repo = new EmpleadoRepository();
-            $res = $repo->Crear($body);
-            
+            $id = $repo->Crear($body);
+
+            $res = $repo->BuscarPorId($id);
+
             return $res;
         });
     }
@@ -64,7 +61,7 @@ class EmpleadoController
 
             $repo = new EmpleadoRepository();
             $res = $repo->BuscarPorId($id);
-        
+
             return $res;
         });
     }

@@ -25,5 +25,7 @@ class ProductoRoutes
         $router->get('/producto-unspsc-familias/[i:codigo]', $ctr->Familias());
         $router->get('/producto-unspsc-clases/[i:codigo]', $ctr->Clases());
         $router->get('/producto-unspsc-productos', $ctr->Productos());
+        //unidad medidasd
+        $router->get('/producto-unidad-medida-buscar', $ctr->BuscarUMedida());
     }
 }

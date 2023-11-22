@@ -9,7 +9,10 @@ use Mnt\mantenedores\Usuario\UsuarioMnt;
 use Mnt\mantenedores\Empresa\EmpresaMnt;
 use Mnt\mantenedores\Sucursal\SucursalMnt;
 use Mnt\mantenedores\Producto\ProductoMnt;
+use Mnt\mantenedores\Categoria\CategoriaMnt;
 use Mnt\facturacion\Facturacion\FacturacionMnt;
+use Mnt\facturacion\Factura\FacturaMnt;
+use Mnt\facturacion\Boleta\BoletaMnt;
 use App\config\Menu\MenuApp;
 use App\config\Ubigeo\UbigeoApp;
 
@@ -31,5 +34,8 @@ class Enpoints
         UbigeoApp::Create($router);
         SucursalMnt::Create($router);
         ProductoMnt::Create($router);
+        CategoriaMnt::Create($router);
+        FacturaMnt::Create($router);
+        BoletaMnt::Create($router);
     }
 }

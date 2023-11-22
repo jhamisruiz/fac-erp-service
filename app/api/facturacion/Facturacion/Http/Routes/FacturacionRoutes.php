@@ -11,14 +11,14 @@ class FacturacionRoutes
         $ctr = new FacturacionController();
 
         // Rutas
-        $router->post('/facturacion-factura', $ctr->Factura());
-        $router->post('/facturacion-boleta', $ctr->Boleta());
-        $router->post('/facturacion-nota-credito', $ctr->NotaCredito());
-        $router->post('/facturacion-nota-debito', $ctr->NotaDebito());
-        $router->post('/facturacion-gia-remision', $ctr->GiraRemision());
-        $router->post('/facturacion-baja-suntat', $ctr->BajaSuna());
-        $router->post('/facturacion-resumen-boletas', $ctr->ResumenBoletas());
+        $router->post('/documento-factura', $ctr->Factura());
+        $router->post('/documento-boleta', $ctr->Boleta());
+        $router->post('/documento-nota-credito', $ctr->NotaCredito());
+        $router->post('/documento-nota-debito', $ctr->NotaDebito());
+        $router->post('/documento-gia-remision', $ctr->GiraRemision());
+        $router->post('/documento-baja-suntat', $ctr->BajaSuna());
+        $router->post('/documento-resumen-boletas', $ctr->ResumenBoletas());
         //lta documentos
-        $router->get('/facturacion-documento-buscar', $ctr->Buscar());
+        $router->get('/documento-tipo-buscar', $ctr->Buscar());
     }
 }

@@ -7,23 +7,22 @@ use PDO;
 
 class MenuPersistence
 {
-    public static function Listar()
+    public static function Listar($id)
     {
         // Ejemplo de uso
 
         $sql = new NewSql();
 
         return $sql->Exec(
-            function ($con) {
+            function ($con) use ($id) {
 
-                $user_id = '1';
+                $user_id = $id;
                 $stmt = $con->prepare("CALL SP_MENU(:user_id);");
                 $stmt->bindParam(':user_id', $user_id);
 
                 $stmt->execute();
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
-            },
-            true
+            }
         );
     }
 }

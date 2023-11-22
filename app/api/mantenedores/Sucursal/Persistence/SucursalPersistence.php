@@ -157,4 +157,34 @@ class SucursalPersistence
             return $stmt->rowCount();
         });
     }
+
+
+    public static function SucursalEmpresa($start, $length, $search, $order, $id, $id_doc)
+    {
+        // Ejemplo de uso
+        $sql = new NewSql();
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order, $id, $id_doc) {
+            $query = "SELECT s.*, 
+                        IFNULL(
+                            (
+                                SELECT 
+                                	JSON_OBJECT(
+                                        'id', d.id,
+                                        'id_sucursal', d.id_sucursal,
+                                        'iddocumento_electronico', d.iddocumento_electronico,
+                                        'serie', d.serie,
+                                        'correlativo', d.correlativo,
+                                        'fecha_creacion', d.fecha_creacion,
+                                        'habilitado', true
+                                    	)
+                            	FROM sucursal_documento d
+                            	WHERE d.id_sucursal=s.id and d.iddocumento_electronico=$id_doc
+                            ), NULL
+                        ) AS detalle
+                    FROM sucursal s where s.id_empresa=$id";
+            $stmt = $con->prepare($query);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        });
+    }
 }

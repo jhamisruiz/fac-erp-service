@@ -88,12 +88,12 @@ class FacturacionPersistence
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        $params = ['codigo', 'nombre', 'descripcion']; #columnas por las que se realizara la busqueda
+        $params = ['codigo', 'nombre', 'descripcion', 'serie']; #columnas por las que se realizara la busqueda
         $search = $sql->like_sql_to_string($params, $search);
         return $sql->Exec(
             function ($con) use ($start, $length, $search, $order) {
                 $table = 'documento_electronico';
-                $columns = 'id,codigo,nombre,descripcion,habilitado';
+                $columns = 'id,codigo,nombre,descripcion,habilitado,serie';
 
                 $stmt = $con->prepare("CALL SP_SELECT_ALL(:start,:length,\"$search\",'$table','$columns','$order')");
                 $stmt->bindParam("start", $start, PDO::PARAM_INT);

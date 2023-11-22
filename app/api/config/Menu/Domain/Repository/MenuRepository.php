@@ -18,14 +18,14 @@ class MenuRepository
         $this->service = $service;
     }
 
-    public function Listar()
+    public function Listar($id)
     {
 
-        $data = MenuPersistence::Listar();
+        $data = MenuPersistence::Listar($id);
 
         $rs = new MenuResponse($this->service);
-        $data = $rs->ListaResponse($data);
+        $response = $rs->ListaResponse($data);
 
-        return  $data;
+        return  $response;
     }
 }

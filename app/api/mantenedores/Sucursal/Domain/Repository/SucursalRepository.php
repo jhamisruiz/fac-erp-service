@@ -92,4 +92,14 @@ class SucursalRepository
 
         return false;
     }
+
+    public function SucursalEmpresa($start, $length, $search, $order, $id, $id_doc)
+    {
+        $data = SucursalPersistence::SucursalEmpresa($start, $length, $search, $order, $id, $id_doc);
+
+        $rs = new SucursalResponse($this->service);
+        $data = $rs->ListaResponse($data);
+
+        return  $data;
+    }
 }

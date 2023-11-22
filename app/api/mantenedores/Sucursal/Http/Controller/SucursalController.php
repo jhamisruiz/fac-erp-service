@@ -173,4 +173,28 @@ class SucursalController
             return $repo->Codigo($codigo);
         });
     }
+
+    public function SucursalEmpresa()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new SucursalModels($service);
+            $sv->validateParamsLista();
+
+            // example request
+            $start = $request->param('start');
+            $length = $request->param('length');
+            $search = $request->param('search');
+            $order = $request->param('order');
+            $id = $request->param('cod');
+            $id_doc = $request->param('doc');
+
+            $repo = new SucursalRepository();
+            $data = $repo->SucursalEmpresa($start, $length, $search, $order, $id, $id_doc);
+
+            return  $data;
+        });
+    }
 }

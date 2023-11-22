@@ -29,11 +29,11 @@ class Server
         ],
         //////////////endpoint menu -
         [
-            "endpoint" => "/v1/menu",
+            "endpoint" => "/v1/menu/[i:id]",
             "method" => "GET",
             "querystring_params" => [],
-            "headers_to_pass" => null,
-            "url_pattern" => "/menu"
+            "headers_to_pass" => ["Authorization"],
+            "url_pattern" => "/menu/[i:id]"
         ],
         //////////////endpoint ubigeo -
         [
@@ -123,6 +123,13 @@ class Server
             "url_pattern" => "/producto"
         ],
         [
+            "endpoint" => "/v1/producto-buscar", //lista todos los producto
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order'],
+            "headers_to_pass" =>  ["Authorization"], //["Authorization"],
+            "url_pattern" => "/producto-buscar"
+        ],
+        [
             "endpoint" => "/v1/producto", //lista todos los producto
             "method" => "GET",
             "querystring_params" => ['start', 'length', 'search', 'order'],
@@ -191,6 +198,13 @@ class Server
             "querystring_params" => ['codigo', 'descripcion'],
             "headers_to_pass" =>  ["Authorization"],
             "url_pattern" => "/producto-unspsc-productos"
+        ],
+        [
+            "endpoint" => "/v1/producto-unidad-medida-buscar", //lista todos los producto
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order'],
+            "headers_to_pass" =>  ["Authorization"], //["Authorization"],
+            "url_pattern" => "/producto-unidad-medida-buscar"
         ],
         ///
         //////////////endpoint empleados -
@@ -279,62 +293,99 @@ class Server
             "headers_to_pass" =>  ["Authorization"],
             "url_pattern" => "/empleado-asistencia/[i:id]"
         ],
-        //facturacion
+        //documento
         [
-            "endpoint" => "/v1/facturacion-documento-buscar", //lista todos los sucursal
+            "endpoint" => "/v1/documento-tipo-buscar", //lista todos los
             "method" => "GET",
             "querystring_params" => ['start', 'length', 'search', 'order'],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-documento-buscar"
+            "url_pattern" => "/documento-tipo-buscar"
         ],
         [
-            "endpoint" => "/v1/facturacion-factura", //actualiza por id
+            "endpoint" => "/v1/documento-factura", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-factura"
+            "url_pattern" => "/documento-factura"
         ],
         [
-            "endpoint" => "/v1/facturacion-boleta", //actualiza por id
+            "endpoint" => "/v1/documento-boleta", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-boleta"
+            "url_pattern" => "/documento-boleta"
         ],
         [
-            "endpoint" => "/v1/facturacion-nota-credito", //actualiza por id
+            "endpoint" => "/v1/documento-nota-credito", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-nota-credito"
+            "url_pattern" => "/documento-nota-credito"
         ],
         [
-            "endpoint" => "/v1/facturacion-nota-debito", //actualiza por id
+            "endpoint" => "/v1/documento-nota-debito", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-nota-debito"
+            "url_pattern" => "/documento-nota-debito"
         ],
         [
-            "endpoint" => "/v1/facturacion-gia-remision", //actualiza por id
+            "endpoint" => "/v1/documento-gia-remision", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-gia-remision"
+            "url_pattern" => "/documento-gia-remision"
         ],
         [
-            "endpoint" => "/v1/facturacion-baja-suntat", //actualiza por id
+            "endpoint" => "/v1/documento-baja-suntat", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-baja-suntat"
+            "url_pattern" => "/documento-baja-suntat"
         ],
         [
-            "endpoint" => "/v1/facturacion-resumen-boletas", //actualiza por id
+            "endpoint" => "/v1/documento-resumen-boletas", //actualiza por id
             "method" => "POST",
             "querystring_params" => [],
             "headers_to_pass" =>  ["Authorization"],
-            "url_pattern" => "/facturacion-resumen-boletas"
+            "url_pattern" => "/documento-resumen-boletas"
+        ],
+
+        //////////////endpoint factura -
+        [
+            "endpoint" => "/v1/factura", //crea
+            "method" => "POST",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/factura"
+        ],
+        [
+            "endpoint" => "/v1/factura", //lista todos los factura
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/factura"
+        ],
+        [
+            "endpoint" => "/v1/factura/[i:id]", //busca por ID
+            "method" => "GET",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/factura/[i:id]"
+        ],
+        [
+            "endpoint" => "/v1/factura", //actualiza por id /[i:id]
+            "method" => "PUT",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/factura"
+        ],
+        [
+            "endpoint" => "/v1/factura/[i:id]", //elimina por id
+            "method" => "DELETE",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/factura/[i:id]"
         ],
         //////////////endpoint EMPRESA -
         [
@@ -423,6 +474,13 @@ class Server
             "url_pattern" => "/sucursal"
         ],
         [
+            "endpoint" => "/v1/sucursal-empresa", //lista todos los sucursal
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order', 'cod', 'doc'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/sucursal-empresa"
+        ],
+        [
             "endpoint" => "/v1/sucursal/[i:id]", //busca por ID
             "method" => "GET",
             "querystring_params" => [],
@@ -463,6 +521,70 @@ class Server
             "querystring_params" => ['code'],
             "headers_to_pass" =>  ["Authorization"],
             "url_pattern" => "/sucursal-codigo"
+        ],
+        //////////////endpoint categoria -
+        [
+            "endpoint" => "/v1/categoria", //crea
+            "method" => "POST",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria"
+        ],
+        [
+            "endpoint" => "/v1/categoria-buscar", //lista todos los categoria
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria-buscar"
+        ],
+        [
+            "endpoint" => "/v1/categoria", //lista todos los categoria
+            "method" => "GET",
+            "querystring_params" => ['start', 'length', 'search', 'order'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria"
+        ],
+        [
+            "endpoint" => "/v1/categoria/[i:id]", //busca por ID
+            "method" => "GET",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria/[i:id]"
+        ],
+        [
+            "endpoint" => "/v1/categoria/[i:id]", //actualiza por id
+            "method" => "PUT",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria/[i:id]"
+        ],
+        [
+            "endpoint" => "/v1/categoria/[i:id]/habilitar", //actualiza por id
+            "method" => "PATCH",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria/[i:id]/habilitar"
+        ],
+        [
+            "endpoint" => "/v1/categoria/[i:id]/deshabilitar", //actualiza por id
+            "method" => "PATCH",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria/[i:id]/deshabilitar"
+        ],
+        [
+            "endpoint" => "/v1/categoria/[i:id]", //elimina por id
+            "method" => "DELETE",
+            "querystring_params" => [],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria/[i:id]"
+        ],
+        [
+            "endpoint" => "/v1/categoria-codigo", //elimina por id
+            "method" => "GET",
+            "querystring_params" => ['code'],
+            "headers_to_pass" =>  ["Authorization"],
+            "url_pattern" => "/categoria-codigo"
         ],
     ];
 }

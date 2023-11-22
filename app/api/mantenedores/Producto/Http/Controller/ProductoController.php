@@ -219,7 +219,39 @@ class ProductoController
             $repo = new ProductoRepository();
             $res = $repo->Productos($codigo, $desc);
 
+            if ($codigo) {
+                $cls = new \stdClass();
+                $f = substr($codigo, 0, 2);
+                $cls->familias = $repo->Familias($f . '000000');
+                $c = substr($codigo, 0, 4);
+                $cls->clases = $repo->Clases($c . '0000');
+                $cls->productos = $res;
+                return $cls;
+            }
+
             return $res;
+        });
+    }
+
+    public function BuscarUMedida()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new ProductoModels($service);
+            $sv->validateParamsLista();
+
+            // example request
+            $start = $request->param('start');
+            $length = $request->param('length');
+            $search = $request->param('search');
+            $order = $request->param('order');
+
+            $repo = new ProductoRepository();
+            $data = $repo->BuscarUMedida($start, $length, $search, $order);
+
+            return  $data;
         });
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\mantenedores\Producto\Persistence;
 
 use App\Utils\Service\NewSql;
@@ -10,12 +11,12 @@ class ProductoPersistence
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        $params = ['id','nombre']; #columnas por las que se realizara la busqueda
+        $params = ['id', 'codigo', 'nombre', 'descripcion']; #columnas por las que se realizara la busqueda
         $search = $sql->like_sql_to_string($params, $search);
-        return $sql->Exec(function ($con) use ($start, $length, $search, $order){
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
             $table = 'producto';
-            $columns = 'id,nombre,..';
-
+            $columns = 'id,codigo,nombre,descripcion,idunidad_medida,habilitado,cantidad,precio,
+                        codigo_unspsc,tipo_afectacion,afecto_icbper,factor_icbper';
             $stmt = $con->prepare("CALL SP_SELECT_ALL(:start,:length,\"$search\",'$table','$columns','$order')");
             $stmt->bindParam("start", $start, PDO::PARAM_INT);
             $stmt->bindParam("length", $length, PDO::PARAM_INT);
@@ -29,7 +30,7 @@ class ProductoPersistence
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        return $sql->Exec(function ($con) use ($start, $length, $search, $order){
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
             $query = "SELECT * FROM producto";
             $stmt = $con->prepare($query);
             $stmt->execute();
@@ -112,6 +113,25 @@ class ProductoPersistence
             $stmt = $con->prepare($query);
             $stmt->execute();
             return $stmt->rowCount();
+        });
+    }
+
+    public static function BuscarUMedida($start, $length, $search, $order)
+    {
+        // Ejemplo de uso
+        $sql = new NewSql();
+        $params = ['id', 'codigo', 'descripcion']; #columnas por las que se realizara la busqueda
+        $search = $sql->like_sql_to_string($params, $search);
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
+            $table = 'unidad_medida';
+            $columns = 'id,codigo,descripcion,habilitado';
+
+            $stmt = $con->prepare("CALL SP_SELECT_ALL(:start,:length,\"$search\",'$table','$columns','$order')");
+            $stmt->bindParam("start", $start, PDO::PARAM_INT);
+            $stmt->bindParam("length", $length, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     }
 }

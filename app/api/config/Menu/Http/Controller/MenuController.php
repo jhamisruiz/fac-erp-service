@@ -13,10 +13,14 @@ class MenuController
         $ctr = new NewController();
 
         return $ctr->Controller(function ($request, $response, $service) {
+            $sv = new MenuModels($request, $response, $service);
             // validators
+            $sv->validateParamsCrear();
+
+            $id = $request->param('id');
 
             $repo = new MenuRepository();
-            $data = $repo->Listar();
+            $data = $repo->Listar($id);
 
             return  $data;
         });

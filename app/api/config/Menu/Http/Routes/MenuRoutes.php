@@ -11,6 +11,6 @@ class MenuRoutes
         $ctr = new MenuController();
 
         // Rutas
-        $router->get('/menu', $ctr->Listar());
+        $router->get('/menu/[i:id]', $ctr->Listar());
     }
 }

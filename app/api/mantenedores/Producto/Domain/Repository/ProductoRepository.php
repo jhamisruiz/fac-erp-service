@@ -174,4 +174,14 @@ class ProductoRepository
         }
         return null;
     }
+
+    public function BuscarUMedida($start, $length, $search, $order)
+    {
+        $data = ProductoPersistence::BuscarUMedida($start, $length, $search, $order);
+
+        $rs = new ProductoResponse($this->service);
+        $data = $rs->ListaResponse($data);
+
+        return  $data;
+    }
 }
