@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\mantenedores\Categoria\Domain\Repository;
 
 use Mnt\mantenedores\Categoria\Domain\Response\CategoriaResponse;
@@ -44,14 +45,16 @@ class CategoriaRepository
         $res = CategoriaPersistence::Crear($body);
 
         //$rs = new CategoriaResponse($this->service);
-        
+
         return $res;
     }
 
     public function BuscarPorId($id)
     {
         $res = CategoriaPersistence::BuscarPorId($id);
-    
+        if (isset($res['error']) && isset($res['code'])) {
+            return  $res;
+        }
         $rs = new CategoriaResponse($this->service);
         $data = $rs->ListaResponse($res);
 
@@ -62,7 +65,7 @@ class CategoriaRepository
     {
         // validators
         $data = CategoriaPersistence::Actualizar($id, $body);
-        
+
         //$rs = new CategoriaResponse($this->service);
         $res = Utils::responseParamsUpdate($data, $id);
         return  $res;
@@ -90,5 +93,4 @@ class CategoriaRepository
 
         return false;
     }
-
 }

@@ -12,7 +12,7 @@ class ProductoController
     {
         $ctr = new NewController();
 
-        return $ctr->Controller(function ($request, $response, $service) {
+        return $ctr->Controller(function ($request, $response, $service, $app) {
             // validators
             $sv = new ProductoModels($service);
             $sv->validateParamsLista();
@@ -24,7 +24,7 @@ class ProductoController
             $order = $request->param('order');
 
             $repo = new ProductoRepository();
-            $data = $repo->Buscar($start, $length, $search, $order);
+            $data = $repo->Buscar($start, $length, $search, $order, $app->getUser());
 
             return  $data;
         });
@@ -34,7 +34,8 @@ class ProductoController
     {
         $ctr = new NewController();
 
-        return $ctr->Controller(function ($request, $response, $service) {
+        return $ctr->Controller(function ($request, $response, $service, $app) {
+            //$app->getUser();-> obtiene datos del usuario en sesion
             // validators
             $sv = new ProductoModels($service);
             $sv->validateParamsLista();
@@ -46,7 +47,7 @@ class ProductoController
             $order = $request->param('order');
 
             $repo = new ProductoRepository();
-            $data = $repo->Listar($start, $length, $search, $order);
+            $data = $repo->Listar($start, $length, $search, $order, $app->getUser());
 
             return  $data;
         });

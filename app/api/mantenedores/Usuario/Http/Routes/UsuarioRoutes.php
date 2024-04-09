@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\mantenedores\Usuario\Http\Routes;
 
 use Mnt\mantenedores\Usuario\Http\Controller\UsuarioController;
@@ -8,7 +9,7 @@ class UsuarioRoutes
     public static function Routes($router)
     {
         $ctr = new UsuarioController();
-    
+
         // Rutas
         $router->get('/usuario', $ctr->Listar());
         $router->post('/usuario', $ctr->Crear());
@@ -17,6 +18,6 @@ class UsuarioRoutes
         $router->delete('/usuario/[i:id]', $ctr->Eliminar());
         $router->patch('/usuario/[i:id]/habilitar', $ctr->Habilitar());
         $router->patch('/usuario/[i:id]/deshabilitar', $ctr->Deshabilitar());
-        
+        $router->post('/usuario-empresa-sucursal', $ctr->UsuarioEmpresa());
     }
 }

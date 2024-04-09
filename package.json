@@ -4,9 +4,9 @@
   "description": "PHP con integración de Node.js",
   "main": "g.js",
   "scripts": {
-    "start": "php -S 0.0.0.0:9080 -t ./",
+    "start": "php -S 0.0.0.0:8080 -t ./",
     "watch": "webpack --watch --progress",
-    "dev": "pwd && php -S localhost:9080",
+    "dev": "pwd && php -S 0.0.0.0:8090",
     "g": "node g c",
     "je": "node g"
   },

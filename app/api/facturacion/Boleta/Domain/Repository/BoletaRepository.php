@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\facturacion\Boleta\Domain\Repository;
 
 use Mnt\facturacion\Boleta\Domain\Response\BoletaResponse;
@@ -44,14 +45,17 @@ class BoletaRepository
         $res = BoletaPersistence::Crear($body);
 
         //$rs = new BoletaResponse($this->service);
-        
+
         return $res;
     }
 
     public function BuscarPorId($id)
     {
         $res = BoletaPersistence::BuscarPorId($id);
-    
+        if (isset($res['error']) && isset($res['code'])) {
+            return  $res;
+        }
+
         $rs = new BoletaResponse($this->service);
         $data = $rs->ListaResponse($res);
 
@@ -62,7 +66,7 @@ class BoletaRepository
     {
         // validators
         $data = BoletaPersistence::Actualizar($id, $body);
-        
+
         //$rs = new BoletaResponse($this->service);
         $res = Utils::responseParamsUpdate($data, $id);
         return  $res;
@@ -90,5 +94,4 @@ class BoletaRepository
 
         return false;
     }
-
 }

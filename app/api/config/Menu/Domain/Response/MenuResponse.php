@@ -28,14 +28,13 @@ class MenuResponse
     {
         if (count($data)) {
             foreach ($data as $key => $value) {
-                $data[$key]['habilitado'] = boolval($value['habilitado']);
+                $data[$key]['habilitado'] =  boolval($value['habilitado']);
                 if (isset($data[$key]['componentes'])) {
                     $data[$key]['componentes'] = json_decode($value['componentes']);
                 }
+                $data[$key]['index'] = ($key + 1);
             }
         }
-
-
         return $data;
     }
 }

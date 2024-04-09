@@ -41,10 +41,7 @@ class SucursalRepository
 
     public function Crear($body)
     {
-        // validators
         $res = SucursalPersistence::Crear($body);
-
-        //$rs = new SucursalResponse($this->service);
 
         return $res;
     }
@@ -82,9 +79,9 @@ class SucursalRepository
         return SucursalPersistence::HabilitarDeshabilitar($id, $status);
     }
 
-    public function Codigo($codigo)
+    public function Codigo($codigo, $id_empresa)
     {
-        $res = SucursalPersistence::Codigo($codigo);
+        $res = SucursalPersistence::Codigo($codigo, $id_empresa);
 
         if ($res === 1) {
             return true;

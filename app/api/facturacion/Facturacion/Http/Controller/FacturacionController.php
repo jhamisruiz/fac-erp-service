@@ -146,4 +146,25 @@ class FacturacionController
             return  $data;
         });
     }
+    public function AfectacionBuscar()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new FacturacionModels($service);
+            $sv->validateParamsLista();
+
+            // example request
+            $start = $request->param('start');
+            $length = $request->param('length');
+            $search = $request->param('search');
+            $order = $request->param('order');
+
+            $repo = new FacturacionRepository();
+            $data = $repo->AfectacionBuscar($start, $length, $search, $order);
+
+            return  $data;
+        });
+    }
 }

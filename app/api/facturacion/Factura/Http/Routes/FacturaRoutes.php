@@ -15,7 +15,7 @@ class FacturaRoutes
         $router->get('/factura', $ctr->Listar());
         $router->post('/factura', $ctr->Crear());
         $router->get('/factura/[i:id]', $ctr->BuscarPorId());
-        $router->put('/factura', $ctr->Actualizar()); // /[i:id]
+        $router->put('/factura', $ctr->Crear()); // /[i:id]Actualizar
         $router->delete('/factura/[i:id]', $ctr->Eliminar());
         $router->patch('/factura/[i:id]/habilitar', $ctr->Habilitar());
         $router->patch('/factura/[i:id]/deshabilitar', $ctr->Deshabilitar());

@@ -54,7 +54,10 @@ class {{ nametwig }}{{ suffix }}
     public function BuscarPorId($id)
     {
         $res = {{name}}Persistence::BuscarPorId($id);
-    
+        if (isset($res['error']) && isset($res['code'])) {
+            return  $res;
+        }
+
         $rs = new {{name}}Response($this->service);
         $data = $rs->ListaResponse($res);
 

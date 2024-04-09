@@ -69,4 +69,22 @@ class UsuarioRepository
     {
         return UsuarioPersistence::HabilitarDeshabilitar($id, $status);
     }
+
+    public function UsuarioEmpresa($body)
+    {
+        // validators
+        $res = UsuarioPersistence::UsuarioEmpresa($body);
+
+        //$rs = new UsuarioResponse($this->service);
+        if ($res === 1 || $res === '1' || $res === 0 || $res === '0') {
+            return (object)[
+                'id' => (int)$body['id'] ?? null,
+                'rowCount' => $res,
+                'message' => 'Datos de Empresa Actualizados.',
+                'data' => $body,
+            ];
+        }
+
+        return $res;
+    }
 }

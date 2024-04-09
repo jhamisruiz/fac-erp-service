@@ -168,9 +168,9 @@ class SucursalController
             // validator
             // example request
             $codigo = $request->param('code');
-
+            $id_empresa = $request->param('idempresa');
             $repo = new SucursalRepository();
-            return $repo->Codigo($codigo);
+            return $repo->Codigo($codigo, $id_empresa);
         });
     }
 

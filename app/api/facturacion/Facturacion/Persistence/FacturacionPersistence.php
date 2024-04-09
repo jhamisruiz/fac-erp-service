@@ -105,4 +105,26 @@ class FacturacionPersistence
             true
         );
     }
+
+    public static function AfectacionBuscar($start, $length, $search, $order)
+    {
+        // Ejemplo de uso
+        $sql = new NewSql();
+        $params = ['id', 'codigo', 'codigo_trbto', 'nombre', 'descripcion']; #columnas por las que se realizara la busqueda
+        $search = $sql->like_sql_to_string($params, $search);
+        return $sql->Exec(
+            function ($con) use ($start, $length, $search, $order) {
+                $table = 'tipo_afectacion';
+                $columns = 'id,codigo,codigo_trbto,letra,nombre,tipo,descripcion,habilitado';
+
+                $stmt = $con->prepare("CALL SP_SELECT_ALL(:start,:length,\"$search\",'$table','$columns','$order')");
+                $stmt->bindParam("start", $start, PDO::PARAM_INT);
+                $stmt->bindParam("length", $length, PDO::PARAM_INT);
+
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            },
+            true
+        );
+    }
 }

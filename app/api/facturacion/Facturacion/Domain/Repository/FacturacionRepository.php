@@ -572,4 +572,14 @@ class FacturacionRepository
 
         return  $response;
     }
+
+    public function AfectacionBuscar($start, $length, $search, $order)
+    {
+        $data = FacturacionPersistence::AfectacionBuscar($start, $length, $search, $order);
+
+        $rsp = new FacturacionResponse($this->service);
+        $response = $rsp->ListaResponse($data);
+
+        return  $response;
+    }
 }

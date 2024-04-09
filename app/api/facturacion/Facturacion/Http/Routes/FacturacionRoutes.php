@@ -20,5 +20,6 @@ class FacturacionRoutes
         $router->post('/documento-resumen-boletas', $ctr->ResumenBoletas());
         //lta documentos
         $router->get('/documento-tipo-buscar', $ctr->Buscar());
+        $router->get('/tipo-afectacion-buscar', $ctr->AfectacionBuscar());
     }
 }

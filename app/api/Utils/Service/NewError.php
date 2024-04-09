@@ -18,8 +18,10 @@ class NewError
     public static function __Log($body, $StatusCode = 200, $NewCodigo = 0)
     {
         $REQUEST_URI = explode("?", $_SERVER['REQUEST_URI']);
+        $error = $StatusCode === null ? $body : Response::$statusTexts[$StatusCode];
+        $StatusCode = ($StatusCode === null ? $NewCodigo : $StatusCode);
         $response = [
-            "error" => Response::$statusTexts[$StatusCode],
+            "error" => $error,
             "code" => $StatusCode,
             "message" => "(#$StatusCode) " . $body,
             "statusCode" => $StatusCode,
@@ -28,10 +30,10 @@ class NewError
             "debug" => "(#$StatusCode)" . $body
         ];
 
-        if (property_exists(Errors::List($body, $StatusCode), $NewCodigo)) {
+        /*if (property_exists(Errors::List($body, $StatusCode), $NewCodigo)) {
             $response = Errors::List($body, $StatusCode)->{$NewCodigo};
-        }
-
+                }
+        */
         return  $response;
     }
 }

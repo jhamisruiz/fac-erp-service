@@ -124,6 +124,7 @@ class EmpresaPersistence
             if (isset($body["certificado"])) {
                 $data = $body["certificado"];
                 $cert = isset($data['nombre']) ? $data['nombre'] : null;
+                $cert = isset($data['delete']) ? null : $cert;
             }
 
             $query = "UPDATE empresa SET 

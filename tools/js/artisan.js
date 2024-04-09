@@ -1,2 +1,46 @@
-class ArtisanCommand{static artisan(){let{spawn:e}=require("child_process"),r=require("chalk"),{Command:n}=require("./../../node_modules/commander"),o=new n;console.log(r.green("Starting to build!")),o.version("1.0.0").command("c [component]").alias("component").description("Genera un componente").option("--ns <ns>","Estructura de directorios y archivos","App").option("--path <path>","Ruta del componente",null).action((n,o)=>{let{ns:t,path:a}=o;n||(console.error(r.red("Error: Debe especificar el nombre del componente.")),process.exit(1));let i=e("php",["artisan","c",`${n}`,`--ns=${t}`,`--path=${a}`],{stdio:"inherit"});i.on("error",e=>{console.error(r.red(`Error: ${e.message}`)),process.exit(1)}),i.on("exit",e=>{10001===e&&console.log(r.green(`
- ${n} created!`))})}),o.parse(process.argv)}}module.exports=ArtisanCommand;
+class ArtisanCommand {
+    static artisan() {
+        const { spawn } = require('child_process');
+        const chalk = require('chalk');
+        const { Command } = require('./../../node_modules/commander');
+        const program = new Command();
+        console.log(chalk.green(`Starting to build!`));
+        program
+            .version('1.0.0')
+            .command('c [component]')
+            .alias('component')
+            .description('Genera un componente')
+            .option('--ns <ns>', 'Estructura de directorios y archivos', 'App')
+            .option('--path <path>', 'Ruta del componente', null)
+            .option('-p <p>', 'Ruta del componente', null)
+            .action((component, options) => {
+                const { ns: optNs, path: optPath, p: optP } = options;
+                if (!component) {
+                    console.error(chalk.red('Error: Debe especificar el nombre del componente.'));
+                    process.exit(1);
+                }
+                console.log(chalk.green(`\n ${JSON.stringify(component)}: component!`));
+                console.log(chalk.green(`\n ${JSON.stringify(options)} options!`));
+                const phpScript = spawn('php', [
+                    'artisan',
+                    'c',
+                    `${component}`,
+                    `--ns=${optNs}`,
+                    `--path=${optPath ? optPath : optP}`
+                ], {
+                    stdio: 'inherit'
+                });
+                phpScript.on('error', (err) => {
+                    console.error(chalk.red(`Error: ${err.message}`));
+                    process.exit(1);
+                });
+                phpScript.on('exit', (code) => {
+                    if (code === 0) {
+                        console.log(chalk.green(`\n ${component} created!`));
+                    }
+                });
+            });
+        program.parse(process.argv);
+    }
+}
+module.exports = ArtisanCommand;

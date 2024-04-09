@@ -1,4 +1,5 @@
 <?php
+
 namespace App\config\Menu\Domain\Models;
 
 class MenuModels
@@ -19,13 +20,14 @@ class MenuModels
         $this->model = $request ?? $response ?? $service ?? $app;
     }
 
-     public function modelRequestBody()
+    public function modelRequestBody()
     {
         return json_decode($this->request->body(), true);
     }
 
     public function validateParamsLista()
     {
+        $this->model->validateParam('userid', 'require start')->isInt();
         $this->model->validateParam('start', 'require start')->isInt();
         $this->model->validateParam('length', 'require length')->isInt();
         $this->model->validateParam('search');
@@ -35,7 +37,7 @@ class MenuModels
     public function validateParamsCrear()
     {
     }
-    
+
     public function validateParamsActualziar()
     {
     }

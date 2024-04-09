@@ -26,8 +26,8 @@ class UsuarioPersistence
         return $sql->Exec(function ($con) use ($body) {
 
             $query = "INSERT INTO usuario
-            (nombres,apellidos,email,username,password,telefono,photo,fecha_creacion,habilitado)
-            VALUES(:nombres,:apellidos,:email,:username,:password,:telefono,:photo,:fecha_creacion,:habilitado)";
+            (nombres,apellidos,email,username,password,telefono,photo,fecha_creacion,habilitado,id_rol)
+            VALUES(:nombres,:apellidos,:email,:username,:password,:telefono,:photo,:fecha_creacion,:habilitado,:id_rol)";
             $stmt = $con->prepare($query);
 
             $stmt->bindParam(":nombres", $body["nombres"], PDO::PARAM_STR);
@@ -39,6 +39,7 @@ class UsuarioPersistence
             $stmt->bindParam(":photo", $body["photo"], PDO::PARAM_STR);
             $stmt->bindParam(":fecha_creacion", $body["fecha_creacion"], PDO::PARAM_STR);
             $stmt->bindParam(":habilitado", $body["habilitado"], PDO::PARAM_INT);
+            $stmt->bindParam(":id_rol", $body["id_rol"], PDO::PARAM_INT);
 
             $stmt->execute();
             return $con->lastInsertId();
@@ -72,7 +73,8 @@ class UsuarioPersistence
                 password = :password,
                 telefono = :telefono,
                 photo =:photo,
-                habilitado =:habilitado
+                habilitado =:habilitado,
+                id_rol =:id_rol
                 WHERE id=:id";
             $stmt = $con->prepare($query);
             $stmt->bindParam(":nombres", $body["nombres"], PDO::PARAM_STR);
@@ -83,6 +85,7 @@ class UsuarioPersistence
             $stmt->bindParam(":telefono", $body["telefono"], PDO::PARAM_STR);
             $stmt->bindParam(":photo", $body["photo"], PDO::PARAM_STR);
             $stmt->bindParam(":habilitado", $body["habilitado"], PDO::PARAM_STR);
+            $stmt->bindParam(":id_rol", $body["id_rol"], PDO::PARAM_INT);
             $stmt->bindParam(":id", $id, PDO::PARAM_INT);
 
             $stmt->execute();
@@ -111,6 +114,26 @@ class UsuarioPersistence
 
             $query = "UPDATE usuario SET habilitado =$status WHERE id=$id";
             $stmt = $con->prepare($query);
+            $stmt->execute();
+            return $stmt->rowCount();
+        });
+    }
+
+    public static function UsuarioEmpresa($body)
+    {
+        // Ejemplo de uso
+        $sql = new NewSql();
+        return $sql->Exec(function ($con) use ($body) {
+
+            $query = "UPDATE usuario SET
+                id_empresa = :id_empresa,
+                id_sucursal = :id_sucursal
+                WHERE id=:id";
+            $stmt = $con->prepare($query);
+            $stmt->bindParam(":id_empresa", $body["id_empresa"], PDO::PARAM_INT);
+            $stmt->bindParam(":id_sucursal", $body["id_sucursal"], PDO::PARAM_INT);
+            $stmt->bindParam(":id", $body['id'], PDO::PARAM_INT);
+
             $stmt->execute();
             return $stmt->rowCount();
         });

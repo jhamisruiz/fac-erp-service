@@ -1,4 +1,5 @@
 <?php
+
 namespace Mnt\facturacion\Factura\Domain\Response;
 
 class FacturaResponse
@@ -19,7 +20,7 @@ class FacturaResponse
         $this->model = $request ?? $response ?? $service ?? $app;
     }
 
-     /**
+    /**
      * @param $data type array
      * @return array
      */
@@ -27,12 +28,12 @@ class FacturaResponse
     {
         if (count($data)) {
             foreach ($data as $key => $value) {
-                $data[$key]['habilitado'] = boolval($value['habilitado']);
+                $data[$key]['enviar_sunat'] = boolval($value['enviar_sunat']);
+                $data[$key]['solo_guardar'] = boolval($value['solo_guardar']);
                 $data[$key]['index'] = ($key + 1);
             }
         }
 
         return $data;
     }
-
 }

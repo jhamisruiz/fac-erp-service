@@ -31,7 +31,8 @@ class SucursalPersistence
         // Ejemplo de uso
         $sql = new NewSql();
         return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
-            $query = "SELECT * FROM sucursal";
+            $query = "SELECT s.*, e.razon_social FROM sucursal s
+                        INNER JOIN empresa e on e.id= s.id_empresa";
             $stmt = $con->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -125,7 +126,7 @@ class SucursalPersistence
         $sql = new NewSql();
         return $sql->Exec(function ($con) use ($id) {
 
-            $query = "DELETE FROM sucursal WHERE id=$id";
+            $query = "DELETE FROM rol WHERE id=$id";
             $stmt = $con->prepare($query);
             $stmt->execute();
             return $stmt->rowCount();
@@ -145,13 +146,13 @@ class SucursalPersistence
         });
     }
 
-    public static function Codigo($codigo)
+    public static function Codigo($codigo, $id_empresa)
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        return $sql->Exec(function ($con) use ($codigo) {
+        return $sql->Exec(function ($con) use ($codigo, $id_empresa) {
 
-            $query = "SELECT * FROM sucursal WHERE codigo=$codigo";
+            $query = "SELECT * FROM sucursal WHERE codigo=$codigo and id_empresa=$id_empresa";
             $stmt = $con->prepare($query);
             $stmt->execute();
             return $stmt->rowCount();

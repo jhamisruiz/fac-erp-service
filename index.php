@@ -3,159 +3,75 @@
 // application
 require_once __DIR__ . '/app/autoload.php';
 
+// if (isset($_SERVER['Authorization'])) {
 
-/* 
-use Slim\Factory\AppFactory;
-use Slim\Middleware\Cache;
-use Slim\Middleware\Session;
+//     $_token = trim($_SERVER["Authorization"]);
+// } else if (isset($_SERVER['HTTP_AUTHORIZATION'])) { //Nginx or fast CGI
 
-$app = AppFactory::create();
+//     $_token = trim($_SERVER["HTTP_AUTHORIZATION"]);
+// } elseif (function_exists('apache_request_headers')) {
 
-// Configura el middleware de cacheo HTTP
-$app->add(new Cache('private', 86400));
+//     $requestHeaders = apache_request_headers();
+//     // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+//     $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
+//     //print_r($requestHeaders);
 
-// Configura el middleware de sesiones
-$app->add(new Session([
-    'name' => 'my-session',
-    'autorefresh' => true,
-    'lifetime' => '1 hour'
-]));
+//     if (isset($requestHeaders['Authorization'])) {
+//         $_token = trim($requestHeaders['Authorization']);
+//     }
+//     echo json_encode($requestHeaders);
+// }
+// header('Content-Type: application/json; charset=UTF-8');
+// $_token = '{
+//     "user_id": 9,
+//     "perfil_id": 1015,
+//     "name": "Administrador",
+//     "company_id": 106,
+//     "corporation_id": "1",
+//     "roles": [
+//         "admin"
+//     ],
+//     "email": "administrador@nisira.com.pe",
+//     "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb21wYW55X2lkIjoxMDYsImNvcnBvcmF0aW9uX2lkIjoiMSIsImV4cCI6MTcwODg5ODQxNSwiaGFzaCI6IjM3YTMwN2RiODMzN2RjM2M3NzI3MDY0ZjVmY2I4ZDE1IiwicGVyZmlsX2lkIjoxMDE1LCJyb2xlcyI6WyJhZG1pbiJdLCJzaWQiOiJFOEMzMUFDMzJFRTk0RkU1QTlFNzBEREQxRUFBNDIwQiIsInVzZXJfaWQiOjksInVzZXJuYW1lIjoiYWRtaW4ifQ.b4NXogTLct5m8hV2P9Wf-xKtcDslITuRZyZwvnrtqe4QY1TBjo3bLQ6DvXyGDJb2cZ-yOOFVLIjtgqwRrpRqn8JSp6-Ruia-PCujZz_zzHESwF3DUyIlJxI8vGTp6f82NG6cM2jcfG8CSygj1NuRZ1isBA1D9H_4VTpQkZOE46I",
+//     "expire": 1708898415,
+//     "sid": "E8C31AC32EE94FE5A9E70DDD1EAA420B"
+// }';
+// $_token = json_decode($_token);
 
-// Define una ruta
-$app->get('/hello/{name}', function ($request, $response, $args) {
-    // Obtiene la información de la sesión
-    $session = $request->getAttribute('session');
+// Función para imprimir el token Bearer y los headers en formato JSON
+// function handleRequest()
+// {
+//     // Obtener el token Bearer del header Authorization
+//     $token = isset($_SERVER['HTTP_AUTHORIZATION']) ? $_SERVER['HTTP_AUTHORIZATION'] : '';
 
-    // Agrega un valor a la sesión
-    $session->set('name', $args['name']);
+//     // Obtener todos los headers en un array
+//     $headers = [];
+//     foreach ($_SERVER as $name => $value) {
+//         if (substr($name, 0, 5) == 'HTTP_') {
+//             $headers[str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($name, 5)))))] = $value;
+//         }
+//     }
 
-    // Obtiene el valor de la sesión
-    $name = $session->get('name');
+//     // Escribir el token Bearer y los headers en formato JSON
+//     $requestHeaders = apache_request_headers();
+//     // Server-side fix for bug in old Android versions (a nice side-effect of this fix means we don't care about capitalization for Authorization)
+//     $requestHeaders = array_combine(array_map('ucwords', array_keys($requestHeaders)), array_values($requestHeaders));
 
-    // Retorna una respuesta con el valor de la sesión
-    $response->getBody()->write("Hello, $name!");
+//     $headers = getallheaders();
 
-    return $response;
-});
+//     // Convertir los encabezados a JSON
+//     $json_headers = json_encode($headers);
+//     $responseData = [
+//         "token" => $token,
+//         "headers" => $headers,
+//         "rh" => $requestHeaders,
+//         "sv" => $_SERVER,
+//         "saph" => $headers
+//     ];
 
-$app->run();
+//     header('Content-Type: application/json');
+//     echo json_encode($responseData);
+// }
 
- */
-
-
- /* 
- 
- use Klein\Klein;
-
-$klein = new Klein();
-
-
-// Middleware para validar la conexión a la base de datos
-
-try {
-    // Conexión a la base de datos
-    $pdo = new PDO('mysql:host=localhost;dbname=embotelladora_cassinelli', 'pandora', 'pandora');
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    // Error al conectar a la base de datos
-    $klein->respond(function ($request, $response, $service) use ($e) {
-        $response->code(500);
-        $response->header('Content-Type', 'application/json');
-        $response->header('Access-Control-Allow-Origin', '*');
-        $response->body(json_encode(['error' => 'No se pudo conectar a la base de datos' . $e->getMessage()]));
-    });
-    $klein->dispatch();
-    if (isset($_SERVER['HTTP_ORIGIN'])) {
-        header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
-    }
-    $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
-    header($protocol . ' 505 error aql');
-    header("Access-Control-Allow-Origin: *");
-    header("Access-Control-Allow-Credentials: true");
-    header("Access-Control-Max-Age: 86400");
-    header("Content-Type: application/json; charset=UTF-8");
-    header('P3P: CP="IDC DSP COR CURa ADMa OUR IND PHY ONL COM STA"');
-    header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With,Origin, Accept");
-    header("Access-Control-Allow-Methods: PUT, GET, POST, DELETE, PATCH");
-
-    exit();
-}
-
-
-$klein->respond(function ($request, $response) {
-    // Permitir el acceso desde cualquier origen
-    $response->header('Access-Control-Allow-Origin', '*');
-
-    // Permitir los métodos HTTP que se van a utilizar
-    $response->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-
-    // Permitir los headers que se van a enviar en la solicitud
-    $response->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-
-    // Devolver la respuesta
-    return $response;
-});
-
-// Operación GET
-$klein->respond('GET', '/v1/usuarios', function ($request, $response) {
-
-    // código para obtener todos los usuarios
-    return $response->json(['message' => 'Obtener todos los usuarios']);
-});
-
-// Operación POST
-$klein->respond('POST', '/v1/usuario', function ($request, $response) {
-    // código para crear un nuevo usuario
-    return $response->json(['message' => 'Crear un nuevo usuario']);
-});
-
-// Operación PUT
-$klein->respond('PUT', '/v1/usuario/[i:id]', function ($request, $response) {
-    // código para actualizar un usuario existente
-    $id = $request->param('id');
-    return $response->json(['message' => 'Actualizar el usuario con id ' . $id]);
-});
-
-// Operación DELETE
-$klein->respond('DELETE', '/usuario/[i:id]', function ($request, $response) {
-    // código para eliminar un usuario existente
-    $id = $request->param('id');
-    return $response->json(['message' => 'Eliminar el usuario con id ' . $id]);
-});
-
-// Operación PATCH
-$klein->respond('PATCH', '/usuario/[i:id]', function ($request, $response) {
-    // código para actualizar parcialmente un usuario existente
-    $id = $request->param('id');
-    return $response->json(['message' => 'Actualizar parcialmente el usuario con id ' . $id]);
-});
-
-$klein->onHttpError(function ($code, $router) use ($klein) {
-    if ($code == 404) {
-        // Ruta no encontrada
-        $klein->response()->code(404);
-        $klein->response()->json(['error' => 'Ruta no encontradas']);
-        $klein->response()->header('Access-Control-Allow-Origin', '*');
-
-        // Permitir los métodos HTTP que se van a utilizar
-        $klein->response()->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-
-        // Permitir los headers que se van a enviar en la solicitud
-        $klein->response()->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    } elseif ($code == 405) {
-        // Método no permitido
-        $klein->response()->code(405);
-        $klein->response()->json(['error' => 'Método no permitido']);
-        $klein->response()->header('Access-Control-Allow-Origin', '*');
-
-        // Permitir los métodos HTTP que se van a utilizar
-        $klein->response()->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
-
-        // Permitir los headers que se van a enviar en la solicitud
-        $klein->response()->header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    }
-});
-// Ejecutar la aplicación
-$klein->dispatch();
- 
- */
+// // Manejar la solicitud
+// handleRequest();

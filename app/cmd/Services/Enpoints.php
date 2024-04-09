@@ -3,18 +3,21 @@
 namespace Cmd\Services;
 
 use Throwable;
-use App\Utils\Auth\AuthApp;
-use Mnt\mantenedores\Empleado\EmpleadoMnt;
-use Mnt\mantenedores\Usuario\UsuarioMnt;
-use Mnt\mantenedores\Empresa\EmpresaMnt;
-use Mnt\mantenedores\Sucursal\SucursalMnt;
-use Mnt\mantenedores\Producto\ProductoMnt;
-use Mnt\mantenedores\Categoria\CategoriaMnt;
-use Mnt\facturacion\Facturacion\FacturacionMnt;
-use Mnt\facturacion\Factura\FacturaMnt;
-use Mnt\facturacion\Boleta\BoletaMnt;
+use App\Auth\AuthApp;
 use App\config\Menu\MenuApp;
 use App\config\Ubigeo\UbigeoApp;
+use Mnt\facturacion\Boleta\BoletaMnt;
+use Mnt\facturacion\Factura\FacturaMnt;
+use Mnt\mantenedores\Cliente\ClienteMnt;
+use Mnt\mantenedores\Empresa\EmpresaMnt;
+use Mnt\mantenedores\Usuario\UsuarioMnt;
+use Mnt\mantenedores\Empleado\EmpleadoMnt;
+use Mnt\mantenedores\Producto\ProductoMnt;
+use Mnt\mantenedores\Sucursal\SucursalMnt;
+use Mnt\mantenedores\Categoria\CategoriaMnt;
+use Mnt\mantenedores\EmpleadoAsistencia\EmpleadoAsistenciaMnt;
+use Mnt\mantenedores\Rol\RolMnt;
+use Mnt\facturacion\Facturacion\FacturacionMnt;
 
 class Enpoints
 {
@@ -37,5 +40,8 @@ class Enpoints
         CategoriaMnt::Create($router);
         FacturaMnt::Create($router);
         BoletaMnt::Create($router);
+        ClienteMnt::Create($router);
+        EmpleadoAsistenciaMnt::Create($router);
+        RolMnt::Create($router);
     }
 }

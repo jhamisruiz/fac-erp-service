@@ -6,6 +6,7 @@ use App\Utils\Service\NewController;
 use App\Utils\FacturacionMdl\FacturacionMdl;
 use Mnt\facturacion\Factura\Domain\Models\FacturaModels;
 use Mnt\facturacion\Factura\Domain\Repository\FacturaRepository;
+use Mnt\mantenedores\Cliente\Domain\Repository\ClienteRepository;
 
 class FacturaController
 {
@@ -35,7 +36,7 @@ class FacturaController
     {
         $ctr = new NewController();
 
-        return $ctr->Controller(function ($request, $response, $service) {
+        return $ctr->Controller(function ($request, $response, $service, $app) {
             // validators
             $sv = new FacturaModels($service);
             $sv->validateParamsLista();
@@ -47,18 +48,9 @@ class FacturaController
             $order = $request->param('order');
 
             $repo = new FacturaRepository();
-            $data = $repo->Listar($start, $length, $search, $order);
+            $data = $repo->Listar($start, $length, $search, $order, $app->getUser());
 
-            return  [
-                [
-                    'factura' => 1,
-                    'pdf' => 1,
-                    'xml' => 1,
-                    'cdr' => 1,
-                    'sunat' => 1,
-                    'correo' => 1,
-                ]
-            ];
+            return  $data;
         });
     }
 
@@ -69,29 +61,29 @@ class FacturaController
         return $ctr->Controller(function ($request, $response, $service) {
             // validators
             $sv = new FacturaModels($request, $response, $service);
-            $sv->validateParamsCrear();
-
-            // example
-            // $user=$app->lazyUser;
-            // $service->validateParam('param_name1', 'Please enter a valid username s')->isLen(4, 6)->isChars('a-zA-Z0-9-');
-            // $service->validateParam('param_name2')->notNull();
             $body = $sv->modelRequestBody();
-            $fact = new FacturacionMdl($body);
 
+            $fact = new FacturacionMdl($body);
+            $fact = $fact->getData();
+
+            //return [$fact];
+            ///cliente
+            $cli = new ClienteRepository();
+            if ($fact['cliente']['cliente_id'] > 0) {
+                $cli->Actualizar($fact['cliente']['cliente_id'], $body['cliente']);
+            } else {
+                $id_cli = $cli->Crear($body['cliente']);
+                if ($id_cli > 0) {
+                    $fact['cliente']['cliente_id'] = ((int)$id_cli);
+                }
+            }
+
+            ///Factura Repository
             $repo = new FacturaRepository();
-            $id = $repo->Crear($body);
+            $res = $repo->Crear($body, $fact);
 
             //$res = $repo->BuscarPorId($id);
-            return [
-                'g_Sub_total' => $fact->getSub_total(),
-                'g_Descuento' => $fact->getDescuento(),
-                'g_Subtotal_con_dscto' => $fact->getSubtotal_con_dscto(),
-                'g_Igv' => $fact->getIgv(),
-                'g_Icbper' => $fact->getIcbper(),
-                'g_Op_exoneradas' => $fact->getOp_exoneradas(),
-                'g_Op_inafectas' => $fact->getOp_inafectas(),
-                'g_Total' => $fact->getTotal()
-            ];
+            return $res;
         });
     }
 

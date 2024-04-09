@@ -27,7 +27,8 @@
             "DB\\": "app/database",
             "Cmd\\": "app/cmd",
             "Mnt\\": "app/api",
-            "Mvt\\": "app/api"
+            "Mvt\\": "app/api",
+            "Sv\\": "app/endpoints"
         }
     },
     "minimum-stability": "dev",
@@ -35,5 +36,4 @@
         "make:mnt": "php conf/aphp.php",
         "g:c": "php conf/acmd.php"
     }
-
 }

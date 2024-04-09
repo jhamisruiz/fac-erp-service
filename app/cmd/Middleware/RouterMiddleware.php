@@ -2,7 +2,7 @@
 
 namespace Cmd\Middleware;
 
-use Cmd\Server\Server;
+use Sv\Server\Server;
 use Klein\Exceptions\ValidationException;
 use Klein\Exceptions\RegularExpressionCompilationException;
 

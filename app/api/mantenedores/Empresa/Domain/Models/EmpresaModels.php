@@ -39,29 +39,36 @@ class EmpresaModels
     {
         if ($data['certificado']) {
             $file = $data['certificado'];
+            $file_name = isset($file['nombre']) ? $file['nombre'] : $data["numero_documento"] . 'pfx';
 
+            $path = dirname(__FILE__) . "/../../../../../../public/certs/" . $data["numero_documento"];
+            if (isset($file['delete']) && $file['delete'] === true) {
+                if (file_exists("$path/$file_name")) {
+                    if (unlink("$path/$file_name")) {
+                        return;
+                    }
+                }
+            }
             if (isset($file['create']) && $file['create'] === true) {
-                $path = dirname(__FILE__) . "/../../../../../../public/certs/" . $data["id"];
                 if (file_exists($path)) {
-                    Utils::eliminarCarpetaYArchivos($path);
+                    Utils::eliminarCarpetaArchivos($path);
                 }
                 if (!file_exists($path)) {
-
                     mkdir($path, 0777, true);
                 }
-                $file_name = isset($file['nombre']) ? $file['nombre'] : $data["numero_documento"] . 'pfx';
+
                 if (isset($file['data'])) {
-                    file_put_contents("$path/$file_name",  base64_decode($file['data']));
+                    file_put_contents("$path/$file_name",  base64_decode(preg_replace('#^data:application/x-pkcs12;base64,#i', '', $file['data'])));
                 }
             }
         }
     }
 
-    public function deleteCetificado($id)
+    public function deleteCetificado($data)
     {
-        $path = dirname(__FILE__) . "/../../../../../../public/certs/" . $id;
+        $path = dirname(__FILE__) . "/../../../../../../public/certs/" . $data["numero_documento"];
         if (file_exists($path)) {
-            Utils::eliminarCarpetaYArchivos($path);
+            Utils::eliminarCarpetaArchivos($path);
         }
     }
 

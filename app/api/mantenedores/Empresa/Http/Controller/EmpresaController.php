@@ -2,9 +2,10 @@
 
 namespace Mnt\mantenedores\Empresa\Http\Controller;
 
+use App\Utils\Utils;
+use App\Utils\Service\NewController;
 use Mnt\mantenedores\Empresa\Domain\Models\EmpresaModels;
 use Mnt\mantenedores\Empresa\Domain\Repository\EmpresaRepository;
-use App\Utils\Service\NewController;
 
 class EmpresaController
 {
@@ -122,10 +123,16 @@ class EmpresaController
             $id = $request->param('id');
 
             $repo = new EmpresaRepository();
-            $res = $repo->Eliminar($id);
-            $sv->deleteCetificado($id);
+            $emprsa = $repo->BuscarPorId($id);
+            //$res = $repo->Eliminar($id);
+            $sv->deleteCetificado($emprsa);
 
-            return  $res;
+            //elimina la carpeta que almacenara las facturas,boletas,...
+            $folder_sunat = FILE_XML . $emprsa['numero_documento'];
+            if (file_exists($folder_sunat)) {
+                Utils::eliminarCarpetaArchivos($folder_sunat);
+            }
+            return  $emprsa;
         });
     }
 

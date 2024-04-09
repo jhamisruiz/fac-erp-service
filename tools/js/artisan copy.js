@@ -18,24 +18,26 @@ class ArtisanCommand {
                     console.error(chalk.red('Error: Debe especificar el nombre del componente.'));
                     process.exit(1);
                 }
-                const phpScript = spawn('php', [
-                    'artisan',
-                    'c',
-                    `${component}`,
-                    `--ns=${optNs}`,
-                    `--path=${optPath}`
-                ], {
-                    stdio: 'inherit'
-                });
-                phpScript.on('error', (err) => {
-                    console.error(chalk.red(`Error: ${err.message}`));
-                    process.exit(1);
-                });
-                phpScript.on('exit', (code) => {
-                    if (code === 0) {
-                        console.log(chalk.green(`\n ${component} created!`));
-                    }
-                });
+                console.log(chalk.green(`\n ${component} component!`));
+                console.log(chalk.green(`\n ${options} options!`));
+                // const phpScript = spawn('php', [
+                //     'artisan',
+                //     'c',
+                //     `${component}`,
+                //     `--ns=${optNs}`,
+                //     `--path=${optPath}`
+                // ], {
+                //     stdio: 'inherit'
+                // });
+                // phpScript.on('error', (err) => {
+                //     console.error(chalk.red(`Error: ${err.message}`));
+                //     process.exit(1);
+                // });
+                // phpScript.on('exit', (code) => {
+                //     if (code === 0) {
+                //         console.log(chalk.green(`\n ${component} created!`));
+                //     }
+                // });
             });
         program.parse(process.argv);
     }

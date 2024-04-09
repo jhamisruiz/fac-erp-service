@@ -7,16 +7,16 @@ use PDO;
 
 class ProductoPersistence
 {
-    public static function Buscar($start, $length, $search, $order)
+    public static function Buscar($start, $length, $search, $order, $user)
     {
         // Ejemplo de uso
         $sql = new NewSql();
         $params = ['id', 'codigo', 'nombre', 'descripcion']; #columnas por las que se realizara la busqueda
         $search = $sql->like_sql_to_string($params, $search);
-        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order, $user) {
             $table = 'producto';
             $columns = 'id,codigo,nombre,descripcion,idunidad_medida,habilitado,cantidad,precio,
-                        codigo_unspsc,tipo_afectacion,afecto_icbper,factor_icbper';
+                        codigo_unspsc,id_tipoafectacion,afecto_icbper,factor_icbper,id_sucursal';
             $stmt = $con->prepare("CALL SP_SELECT_ALL(:start,:length,\"$search\",'$table','$columns','$order')");
             $stmt->bindParam("start", $start, PDO::PARAM_INT);
             $stmt->bindParam("length", $length, PDO::PARAM_INT);
@@ -26,13 +26,18 @@ class ProductoPersistence
         });
     }
 
-    public static function Listar($start, $length, $search, $order)
+    public static function Listar($start, $length, $search, $order, $user)
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
-            $query = "SELECT * FROM producto";
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order, $user) {
+            $query = "SELECT p.*,c.nombre as nombre_categoria, u.codigo as codigo_umedida , u.codigo as descripcion_umedida 
+                        FROM producto p
+                        INNER JOIN categoria c ON p.id_categoria=c.id
+                        INNER JOIN unidad_medida u ON p.idunidad_medida=u.id
+                        where id_sucursal=:id_sucursal";
             $stmt = $con->prepare($query);
+            $stmt->bindParam("id_sucursal", $user->id_sucursal, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         });

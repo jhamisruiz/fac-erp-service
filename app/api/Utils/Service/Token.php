@@ -4,7 +4,7 @@ namespace App\Utils\Service;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use App\Utils\Auth\Domain\Repository\AuthRepository;
+use App\Auth\Domain\Repository\AuthRepository;
 
 class Token
 {
@@ -66,9 +66,9 @@ class Token
                         return 'Token is expired / Forbidden authentication.';
                     }
 
-                    $app->register('lazyUser', function () use ($user) {
+                    $app->register('getUser', function () use ($user) {
 
-                        return $user;
+                        return (object)$user;
                     });
 
                     $_token = "ok";

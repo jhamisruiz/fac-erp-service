@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    container_name: sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "Password123"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqldata:/var/opt/mssql/data
+      - sqlbackup:/var/opt/mssql/backup
+    restart: unless-stopped
+
+  sqlcmd:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: sqlcmd
+    command: /opt/mssql-tools/bin/sqlcmd -S sqlserver -U SA -P "Password123"
+    depends_on:
+      - sqlserver
+
+volumes:
+  sqldata:
+  sqlbackup:

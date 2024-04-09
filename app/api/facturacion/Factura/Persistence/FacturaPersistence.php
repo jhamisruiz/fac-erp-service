@@ -26,29 +26,37 @@ class FacturaPersistence
         });
     }
 
-    public static function Listar($start, $length, $search, $order)
+    public static function Listar($start, $length, $search, $order, $user)
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        return $sql->Exec(function ($con) use ($start, $length, $search, $order) {
-            $query = "SELECT * FROM doc_factura";
+        return $sql->Exec(function ($con) use ($start, $length, $search, $order, $user) {
+            $query = "SELECT * FROM doc_factura where id_sucursal=:id_sucursal";
             $stmt = $con->prepare($query);
+            $stmt->bindParam("id_sucursal", $user->id_sucursal, PDO::PARAM_INT);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         });
     }
 
-    public static function Crear($body)
+    public static function Crear($data)
     {
         // Ejemplo de uso
         $sql = new NewSql();
-        return $sql->Exec(function ($con) use ($body) {
+        return $sql->Exec(
+            function ($con) use ($data) {
 
-            $query = "INSERT INTO factura VALUES ...";
-            $stmt = $con->prepare($query);
-            $stmt->execute();
-            return $con->lastInsertId();
-        });
+                $json = json_encode($data);
+
+                $sql = "CALL SP_FACTURA_I(:json)";
+                $stmt = $con->prepare($sql);
+                $stmt->bindParam(':json', $json, PDO::PARAM_STR);
+
+                $stmt->execute();
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            },
+            false
+        );
     }
 
     public static function BuscarPorId($id)
@@ -57,7 +65,7 @@ class FacturaPersistence
         $sql = new NewSql();
         return $sql->Exec(function ($con) use ($id) {
 
-            $query = "SELECT * FROM factura WHERE id=$id";
+            $query = "SELECT * FROM doc_factura WHERE id=$id";
             $stmt = $con->prepare($query);
             $stmt->execute();
             return $stmt->fetchAll(PDO::FETCH_ASSOC);

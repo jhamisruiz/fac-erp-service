@@ -24,8 +24,9 @@ $command
     ->addArgument('c', InputArgument::REQUIRED, 'Abreviatura  del component')
     ->addArgument('component', InputArgument::REQUIRED, 'Nombre del componente')
     ->setDescription('Genera un componente')
+    //->addOption('component', ['c'], InputOption::VALUE_REQUIRED, 'Ruta del componente', 'micomponente')
     ->addOption('ns', null, InputOption::VALUE_OPTIONAL, 'Estructura de directorios y archivos', 'App')
-    ->addOption('path', null, InputOption::VALUE_OPTIONAL, 'Ruta del componente', null)
+    ->addOption('path', ['p'], InputOption::VALUE_OPTIONAL, 'Ruta del componente', null)
     ->setCode(function (InputInterface $input, OutputInterface $output) {
 
         //|--------------------------------------------------------------------------
@@ -51,7 +52,7 @@ $command
         $componentName = ucfirst($component);
         $ns = ucfirst($input->getOption('ns'));
         $ns = ($ns) ? $ns : 'App';
-        $componentPath =  ($input->getOption('path') === null ? null : $input->getOption('path'));
+        $componentPath =  ($input->getOption('path') === null ? '' : $input->getOption('path'));
 
         $componentPath = ($componentPath === null || $componentPath === 'null' || $componentPath === '') ? "" : $componentPath;
 

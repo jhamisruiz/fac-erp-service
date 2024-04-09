@@ -140,4 +140,21 @@ class UsuarioController
             return  $res;
         });
     }
+
+    public function UsuarioEmpresa()
+    {
+        $ctr = new NewController();
+
+        return $ctr->Controller(function ($request, $response, $service) {
+            // validators
+            $sv = new UsuarioModels($request, $response, $service);
+
+            $body =  $sv->modelRequestBody();
+
+            $repo = new UsuarioRepository();
+            $response = $repo->UsuarioEmpresa($body);
+
+            return $response;
+        });
+    }
 }

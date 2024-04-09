@@ -20,9 +20,9 @@ class ProductoRepository
         $this->service = $service;
     }
 
-    public function Buscar($start, $length, $search, $order)
+    public function Buscar($start, $length, $search, $order, $user)
     {
-        $data = ProductoPersistence::Buscar($start, $length, $search, $order);
+        $data = ProductoPersistence::Buscar($start, $length, $search, $order, $user);
 
         $rs = new ProductoResponse($this->service);
         $data = $rs->ListaResponse($data);
@@ -30,9 +30,9 @@ class ProductoRepository
         return  $data;
     }
 
-    public function Listar($start, $length, $search, $order)
+    public function Listar($start, $length, $search, $order, $user)
     {
-        $data = ProductoPersistence::Listar($start, $length, $search, $order);
+        $data = ProductoPersistence::Listar($start, $length, $search, $order, $user);
 
         $rs = new ProductoResponse($this->service);
         $data = $rs->ListaResponse($data);
